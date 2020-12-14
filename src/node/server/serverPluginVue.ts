@@ -37,6 +37,7 @@ import {
 import { resolveImport } from './serverPluginModuleRewrite'
 import { SourceMap, mergeSourceMap } from './serverPluginSourceMap'
 import { ServerConfig } from '../config'
+import { injectGlobalSCSS } from '../utils/globalStyles'
 
 const debug = require('debug')('vite:sfc')
 const getEtag = require('etag')
@@ -642,8 +643,11 @@ async function compileSFCStyle(
 
   const { generateCodeFrame } = resolveCompiler(root)
   const resource = filePath + `?type=style&index=${index}`
+
+  const styleContent = injectGlobalSCSS(root, style.content)
+
   const result = (await compileCss(root, publicPath, {
-    source: style.content,
+    source: styleContent,
     filename: resource,
     id: ``, // will be computed in compileCss
     scoped: style.scoped != null,

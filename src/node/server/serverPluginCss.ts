@@ -17,6 +17,7 @@ import chalk from 'chalk'
 import { InternalResolver } from '../resolver'
 import { clientPublicPath } from './serverPluginClient'
 import { dataToEsm } from '@rollup/pluginutils'
+import { injectGlobalSCSS } from '../utils/globalStyles'
 
 export const debugCSS = require('debug')('vite:css')
 
@@ -148,9 +149,11 @@ export const cssPlugin: ServerPlugin = ({ root, app, watcher, resolver }) => {
       return processedCSS.get(ctx.path)!
     }
 
-    const css = (await readBody(ctx.body))!
+    let css = (await readBody(ctx.body))!
     const filePath = resolver.requestToFile(ctx.path)
     const preprocessLang = (ctx.path.match(cssPreprocessLangRE) || [])[1]
+
+    css = injectGlobalSCSS(root, css)
 
     const result = await compileCss(root, ctx.path, {
       id: '',
