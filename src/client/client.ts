@@ -4,6 +4,7 @@
 declare const __HMR_PROTOCOL__: string
 declare const __HMR_HOSTNAME__: string
 declare const __HMR_PORT__: string
+declare const __HMR_PATH__: string
 declare const __HMR_TIMEOUT__: number
 declare const __MODE__: string
 declare const __DEFINES__: Record<string, any>
@@ -35,7 +36,8 @@ declare var __VUE_HMR_RUNTIME__: HMRRuntime
 // use server configuration, then fallback to inference
 const socketProtocol =
   __HMR_PROTOCOL__ || (location.protocol === 'https:' ? 'wss' : 'ws')
-const socketHost = `${__HMR_HOSTNAME__ || location.hostname}:${__HMR_PORT__}`
+const socketHost = `${location.host}${__HMR_PATH__}`
+console.log(`[vite] ${socketProtocol}://${socketHost}`)
 const socket = new WebSocket(`${socketProtocol}://${socketHost}`, 'vite-hmr')
 
 function warnFailedFetch(err: Error, path: string | string[]) {
