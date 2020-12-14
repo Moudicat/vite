@@ -1,6 +1,6 @@
 {
   "name": "@ziroom/vite-test",
-  "version": "1.0.0-rc.16",
+  "version": "1.0.0-rc.17",
   "license": "MIT",
   "author": "Evan You",
   "description": "Native-ESM powered web dev build tool. It's fast.",
